@@ -5,6 +5,16 @@
 <title>Greeting</title>
 </head>
 <body>
-	<p></p>
+	<div th:if="${greetings != null}">
+        <ul>
+            <li th:each="greeting : ${greetings}" th:text="${greeting.message}"></li>
+        </ul>
+    </div>
+
+    <div th:if="${greetingsWithUsers != null}">
+        <ul>
+            <li th:each="greeting : ${greetingsWithUsers}" th:text="${greeting.name + ' says ' + greeting.message}"></li>
+        </ul>
+    </div>
 </body>
 </html>

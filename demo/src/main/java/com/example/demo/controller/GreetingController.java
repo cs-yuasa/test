@@ -1,19 +1,16 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.GreetingUserDTO;
-import com.example.demo.model.Greeting;
 import com.example.demo.service.GreetingService;
 
-@RestController
+@Controller
 @RequestMapping("/")
 public class GreetingController {
 	
@@ -29,13 +26,15 @@ public class GreetingController {
 	}
 	
 	@GetMapping("/{id}")
-	public Greeting getGreeting(@PathVariable Long id) {
-		return greetingService.getGreetingById(id);
+	public String getGreeting(@PathVariable Long id, Model model) {
+		model.addAttribute("greetings", greetingService.getGreetingById(id));
+		return "index";
 	}
 	
 	@GetMapping
-	public List<Greeting> getAllGreetings() {
-		return greetingService.getAllGreetings();
+	public String getAllGreetings(Model model) {
+		model.addAttribute("greetings", greetingService.getAllGreetings());
+		return "index";
 	}
 	
 	@PostMapping("/update/{id}")
@@ -49,7 +48,8 @@ public class GreetingController {
 	}
 	
 	@GetMapping("/users")
-    public List<GreetingUserDTO> getGreetingsWithUsers() {
-        return greetingService.getAllGreetingsWithUsers();
+    public String getGreetingsWithUsers(Model model) {
+		model.addAttribute("greetingsWithUsers", greetingService.getAllGreetingsWithUsers());
+        return "index";
     }
 }
