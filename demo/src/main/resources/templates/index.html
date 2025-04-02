@@ -30,5 +30,8 @@
 	        </li>
         </ul>
     </div>
+	<div th:if="${successMessage}" style="color: #4CAF50;">
+	    <p th:text="${successMessage}"></p>
+	</div>
 </body>
 </html>

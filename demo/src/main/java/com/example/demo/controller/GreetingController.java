@@ -28,7 +28,7 @@ public class GreetingController {
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
 		greetingService.addGreeting(message);
-		redirectAttributes.addFlashAttribute("createMessage", "作成が完了しました！");
+		redirectAttributes.addFlashAttribute("successMessage", "作成が完了しました！");
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");
 	}
@@ -53,7 +53,7 @@ public class GreetingController {
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
 		greetingService.updateGreetingAndUser(id, message, memo, name);
-		redirectAttributes.addFlashAttribute("updateMessage", "更新が完了しました！");
+		redirectAttributes.addFlashAttribute("successMessage", "更新が完了しました！");
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");
 	}
@@ -63,7 +63,7 @@ public class GreetingController {
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
 		greetingService.deleteGreeting(id);
-		redirectAttributes.addFlashAttribute("deleteMessage", "削除が完了しました！");
+		redirectAttributes.addFlashAttribute("successMessage", "削除が完了しました！");
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");
 	}
