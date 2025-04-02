@@ -27,6 +27,7 @@ public class SqlExecutor {
             return jdbcTemplate.query(sql, (rs, rowNum) -> new GreetingUserDTO(
                 rs.getLong("id"),
                 rs.getString("message"),
+                rs.getString("memo"),
                 rs.getString("name")
             ));
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.service.GreetingService;
 
@@ -21,8 +24,13 @@ public class GreetingController {
 	}
 	
 	@PostMapping
-	public void createGreeting(@RequestParam String message) {
+	public String createGreeting(@RequestParam String message, 
+			RedirectAttributes redirectAttributes, 
+			HttpServletRequest request) {
 		greetingService.addGreeting(message);
+		redirectAttributes.addFlashAttribute("createMessage", "作成が完了しました！");
+		String referer = request.getHeader("Referer");
+		return "redirect:" + (referer != null ? referer : "/");
 	}
 	
 	@GetMapping("/{id}")
@@ -38,18 +46,31 @@ public class GreetingController {
 	}
 	
 	@PostMapping("/update/{id}")
-	public void updateGreeting(@PathVariable Long id, @RequestParam String message) {
-		greetingService.updateMessage(id, message);
+	public String updateMessageAndName(@PathVariable Long id, 
+			@RequestParam String message, 
+			@RequestParam String memo, 
+			@RequestParam(required = false) String name, 
+			RedirectAttributes redirectAttributes, 
+			HttpServletRequest request) {
+		greetingService.updateGreetingAndUser(id, message, memo, name);
+		redirectAttributes.addFlashAttribute("updateMessage", "更新が完了しました！");
+		String referer = request.getHeader("Referer");
+		return "redirect:" + (referer != null ? referer : "/");
 	}
 	
 	@PostMapping("/delete/{id}")
-	public void deleteGreeting(@PathVariable Long id) {
+	public String deleteGreeting(@PathVariable Long id, 
+			RedirectAttributes redirectAttributes, 
+			HttpServletRequest request) {
 		greetingService.deleteGreeting(id);
+		redirectAttributes.addFlashAttribute("deleteMessage", "削除が完了しました！");
+		String referer = request.getHeader("Referer");
+		return "redirect:" + (referer != null ? referer : "/");
 	}
 	
 	@GetMapping("/users")
     public String getGreetingsWithUsers(Model model) {
 		model.addAttribute("greetingsWithUsers", greetingService.getAllGreetingsWithUsers());
-        return "index";
+		return "index";
     }
 }

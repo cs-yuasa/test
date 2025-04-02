@@ -2,18 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:,">
 <title>Greeting</title>
 </head>
 <body>
 	<div th:if="${greetings != null}">
         <ul>
-            <li th:each="greeting : ${greetings}" th:text="${greeting.message}"></li>
+			<li th:each="greeting : ${greetings}">
+	            <form th:action="@{/update/{id}(id=${greeting.id})}" method="post">
+	                <input type="text" name="message" th:value="${greeting.message}" />
+					<input type="text" name="memo" th:value="${greeting.memo}" placeholder="メモ..." />
+	                <button type="submit">更新</button>
+	            </form>
+	        </li>
         </ul>
     </div>
 
     <div th:if="${greetingsWithUsers != null}">
         <ul>
-            <li th:each="greeting : ${greetingsWithUsers}" th:text="${greeting.name + ' says ' + greeting.message}"></li>
+			<li th:each="greeting : ${greetingsWithUsers}">
+	            <form th:action="@{/update/{id}(id=${greeting.id})}" method="post">
+	                <input type="text" name="message" th:value="${greeting.message}" />
+					<input type="text" name="name" th:value="${greeting.name}" />
+					<input type="text" name="memo" th:value="${greeting.memo}" placeholder="メモ..." />
+	                <button type="submit">更新</button>
+	            </form>
+	        </li>
         </ul>
     </div>
 </body>

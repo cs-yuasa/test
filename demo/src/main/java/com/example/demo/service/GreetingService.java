@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.GreetingUserDTO;
 import com.example.demo.mapper.GreetingMapper;
@@ -32,9 +33,19 @@ public class GreetingService {
     public List<Greeting> getAllGreetings() {
         return greetingMapper.findAllGreetings();
     }
-
-    public void updateMessage(Long id, String message) {
-        greetingMapper.updateMessage(id, message);
+    
+    @Transactional
+    public void updateGreetingAndUser(Long greetingId, 
+    		String message, String memo, String name) {
+    	if (message != null && !message.isEmpty()) {
+    		greetingMapper.updateMessage(greetingId, message);
+    	}
+    	if (memo != null && !memo.isEmpty()) {
+    		greetingMapper.updateMemo(greetingId, memo);
+    	}
+    	if (name != null && !name.isEmpty()) {
+    		greetingMapper.updateNameByGreetingId(greetingId, name);
+    	}
     }
 
     public void deleteGreeting(Long id) {
