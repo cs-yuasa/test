@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.GreetingUserDTO;
 import com.example.demo.mapper.GreetingMapper;
-import com.example.demo.model.Greeting;
+
+import model.Greeting;
+import model.User;
 
 @Service
 public class GreetingService {
-	
+
 	private final GreetingMapper greetingMapper;
 	private final SqlExecutor sqlExecutor;
 
@@ -20,18 +22,26 @@ public class GreetingService {
         this.sqlExecutor = sqlExecutor;
     }
     
-    public void addGreeting(String message) {
+    @Transactional
+    public void addNameAndMessage(String name, String message) {
+    	Long userId = null;
+    	List<User> userList = greetingMapper.findUsersByName(name);
+    	if(userList != null) {
+    		userId = userList.get(0).getId();
+    	} else {
+    		User user = new User();
+            user.setName(name);
+            greetingMapper.insertUser(user);
+            userId = user.getId();
+    	}
         Greeting greeting = new Greeting();
         greeting.setMessage(message);
+        greeting.setUserId(userId);
         greetingMapper.insertGreeting(greeting);
     }
-
-    public Greeting getGreetingById(Long id) {
-        return greetingMapper.findGreetingById(id);
-    }
-
-    public List<Greeting> getAllGreetings() {
-        return greetingMapper.findAllGreetings();
+    
+    public List<User> getAllName() {
+    	return greetingMapper.findAllName();
     }
     
     @Transactional

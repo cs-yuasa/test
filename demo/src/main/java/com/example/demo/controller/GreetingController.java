@@ -23,33 +23,31 @@ public class GreetingController {
 		this.greetingService = greetingService;
 	}
 	
-	@PostMapping
-	public String createGreeting(@RequestParam String message, 
+	@PostMapping("/create")
+	public String createGreetingAndUser(
+			@RequestParam String name, 
+			@RequestParam String message, 
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
-		greetingService.addGreeting(message);
+		greetingService.addNameAndMessage(name, message);
 		redirectAttributes.addFlashAttribute("successMessage", "作成が完了しました！");
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");
 	}
 	
-	@GetMapping("/{id}")
-	public String getGreeting(@PathVariable Long id, Model model) {
-		model.addAttribute("greetings", greetingService.getGreetingById(id));
-		return "index";
-	}
-	
 	@GetMapping
-	public String getAllGreetings(Model model) {
-		model.addAttribute("greetings", greetingService.getAllGreetings());
+	public String getGreetingsWithUsers(Model model) {
+		model.addAttribute("users", greetingService.getAllName());
+		model.addAttribute("greetings", greetingService.getAllGreetingsWithUsers());
 		return "index";
-	}
+    }
 	
 	@PostMapping("/update/{id}")
-	public String updateMessageAndName(@PathVariable Long id, 
+	public String updateMessageAndName(
+			@PathVariable Long id, 
 			@RequestParam String message, 
 			@RequestParam String memo, 
-			@RequestParam(required = false) String name, 
+			@RequestParam String name, 
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
 		greetingService.updateGreetingAndUser(id, message, memo, name);
@@ -59,7 +57,8 @@ public class GreetingController {
 	}
 	
 	@PostMapping("/delete/{id}")
-	public String deleteGreeting(@PathVariable Long id, 
+	public String deleteGreeting(
+			@PathVariable Long id, 
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
 		greetingService.deleteGreeting(id);
@@ -67,10 +66,4 @@ public class GreetingController {
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");
 	}
-	
-	@GetMapping("/users")
-    public String getGreetingsWithUsers(Model model) {
-		model.addAttribute("greetingsWithUsers", greetingService.getAllGreetingsWithUsers());
-		return "index";
-    }
 }

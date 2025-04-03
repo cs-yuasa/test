@@ -10,20 +10,25 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.example.demo.model.Greeting;
+import model.Greeting;
+import model.User;
 
 @Mapper
 public interface GreetingMapper {
 
-    @Insert("INSERT INTO greetings (message) VALUES (#{message}")
+	@Insert("INSERT INTO users (name) VALUES (#{name})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insertGreeting(Greeting user);
+    void insertUser(User user);
 
-    @Select("SELECT * FROM greetings WHERE id = #{id}")
-    Greeting findGreetingById(@Param("id") Long id);
+    @Insert("INSERT INTO greetings (message, user_id) VALUES (#{message}, #{userId})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertGreeting(Greeting greeting);
     
-    @Select("SELECT * FROM greetings ORDER BY id")
-    List<Greeting> findAllGreetings();
+    @Select("SELECT name FROM users")
+    List<User> findAllName();
+    
+    @Select("SELECT * FROM users WHERE name = #{name}")
+    List<User> findUsersByName(@Param("name") String name);
 
     @Update("UPDATE greetings SET message = #{message} WHERE id = #{id}")
     void updateMessage(@Param("id") Long id, @Param("message") String message);

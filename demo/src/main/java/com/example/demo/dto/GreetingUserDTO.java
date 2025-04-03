@@ -8,6 +8,8 @@ public class GreetingUserDTO {
     private String message;
     private String memo;
     private String name;
+    
+    public GreetingUserDTO() {}
 
     public GreetingUserDTO(Long id, String message, String memo, String name) {
         this.id = id;

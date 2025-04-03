@@ -6,30 +6,54 @@
 <title>Greeting</title>
 </head>
 <body>
-	<div th:if="${greetings != null}">
-        <ul>
-			<li th:each="greeting : ${greetings}">
-	            <form th:action="@{/update/{id}(id=${greeting.id})}" method="post">
-	                <input type="text" name="message" th:value="${greeting.message}" />
-					<input type="text" name="memo" th:value="${greeting.memo}" placeholder="メモ..." />
-	                <button type="submit">更新</button>
-	            </form>
-	        </li>
-        </ul>
-    </div>
+	<h2>新規作成</h2>
+    <form th:action="@{/create}" method="post" class="form-inline">
+		<input list=names type="text" name="name" maxlength="50" placeholder="名前" required />
+		<datalist id="names">
+		    <option th:each="user : ${users}" th:value=${user.name}>
+		</datalist>
+        <input type="text" name="message" maxlength="50" placeholder="メッセージ" required />
+        <button type="submit" class="create-btn">作成</button>
+    </form>
 
-    <div th:if="${greetingsWithUsers != null}">
-        <ul>
-			<li th:each="greeting : ${greetingsWithUsers}">
-	            <form th:action="@{/update/{id}(id=${greeting.id})}" method="post">
-	                <input type="text" name="message" th:value="${greeting.message}" />
-					<input type="text" name="name" th:value="${greeting.name}" />
-					<input type="text" name="memo" th:value="${greeting.memo}" placeholder="メモ..." />
-	                <button type="submit">更新</button>
-	            </form>
-	        </li>
-        </ul>
-    </div>
+    <h2>データ一覧</h2>
+    <table th:if="${not #lists.isEmpty(greetings)}">
+        <thead>
+            <tr>
+                <th>ID</th>
+				<th>名前</th>
+                <th>メッセージ</th>
+                <th>メモ</th>
+                <th>更新</th>
+				<th>削除</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="greeting : ${greetings}">
+                <td th:text="${greeting.id}"></td>
+				<td>
+					<form th:action="@{/update/{id}(id=${greeting.id})}" method="post">
+					<input type="text" name="name" maxlength="50" th:value="${greeting.name}" placeholder="名前" required/>
+	            </td>
+                <td>
+                    <input type="text" name="message" maxlength="50" th:value="${greeting.message}" placeholder="メッセージ" required />
+                </td>
+                <td>
+                    <input type="text" name="memo" maxlength="50" th:value="${greeting.memo}" placeholder="メモ..." />
+                </td>
+				<td>
+                    <button type="submit" class="update-btn">更新</button>
+					</form>
+                </td>
+				<td>
+                    <form th:action="@{/delete/{id}(id=${greeting.id})}" method="post">
+                        <button type="submit" class="delete-btn">削除</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+	<p th:if="${#lists.isEmpty(greetings)}">データがありません</p>
 	<div th:if="${successMessage}" style="color: #4CAF50;">
 	    <p th:text="${successMessage}"></p>
 	</div>
