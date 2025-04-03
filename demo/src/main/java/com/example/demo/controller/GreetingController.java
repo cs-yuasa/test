@@ -45,12 +45,12 @@ public class GreetingController {
 	@PostMapping("/update/{id}")
 	public String updateMessageAndName(
 			@PathVariable Long id, 
+			@RequestParam String name, 
 			@RequestParam String message, 
 			@RequestParam String memo, 
-			@RequestParam String name, 
 			RedirectAttributes redirectAttributes, 
 			HttpServletRequest request) {
-		greetingService.updateGreetingAndUser(id, message, memo, name);
+		greetingService.updateGreetingAndUser(id, name, message, memo);
 		redirectAttributes.addFlashAttribute("successMessage", "更新が完了しました！");
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");

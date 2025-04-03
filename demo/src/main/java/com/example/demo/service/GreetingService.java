@@ -26,7 +26,7 @@ public class GreetingService {
     public void addNameAndMessage(String name, String message) {
     	Long userId = null;
     	List<User> userList = greetingMapper.findUsersByName(name);
-    	if(userList != null) {
+    	if(userList != null && userList.size() != 0) {
     		userId = userList.get(0).getId();
     	} else {
     		User user = new User();
@@ -46,16 +46,17 @@ public class GreetingService {
     
     @Transactional
     public void updateGreetingAndUser(Long greetingId, 
-    		String message, String memo, String name) {
-    	if (message != null && !message.isEmpty()) {
-    		greetingMapper.updateMessage(greetingId, message);
-    	}
-    	if (memo != null && !memo.isEmpty()) {
-    		greetingMapper.updateMemo(greetingId, memo);
-    	}
+    		String name, String message, String memo) {
     	if (name != null && !name.isEmpty()) {
     		greetingMapper.updateNameByGreetingId(greetingId, name);
     	}
+    	if (message != null && !message.isEmpty()) {
+    		greetingMapper.updateMessage(greetingId, message);
+    	}
+    	if (memo != null) {
+    		greetingMapper.updateMemo(greetingId, memo);
+    	}
+    	
     }
 
     public void deleteGreeting(Long id) {
