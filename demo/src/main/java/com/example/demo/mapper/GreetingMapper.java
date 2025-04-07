@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import model.Greeting;
-import model.User;
+import com.example.demo.model.Greeting;
+import com.example.demo.model.User;
 
 @Mapper
 public interface GreetingMapper {

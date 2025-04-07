@@ -13,9 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.demo.dto.GreetingUserDTO;
+import com.example.demo.model.User;
 import com.example.demo.service.GreetingService;
-
-import model.User;
 
 @WebMvcTest(GreetingController.class)
 class GreetingControllerTest {

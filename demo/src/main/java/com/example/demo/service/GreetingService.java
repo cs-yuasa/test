@@ -7,9 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.GreetingUserDTO;
 import com.example.demo.mapper.GreetingMapper;
-
-import model.Greeting;
-import model.User;
+import com.example.demo.model.Greeting;
+import com.example.demo.model.User;
 
 @Service
 public class GreetingService {
