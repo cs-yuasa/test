@@ -1,0 +1,6 @@
+com.example.demo
+com.example.demo.controller
+com.example.demo.dto
+com.example.demo.mapper
+com.example.demo.model
+com.example.demo.service
