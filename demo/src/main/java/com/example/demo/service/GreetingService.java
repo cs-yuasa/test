@@ -65,6 +65,16 @@ public class GreetingService {
     }
     
     /**
+     * 指定されたユーザー名に対応するユーザーのリストを取得します。
+     * 
+     * @param name ユーザー名
+     * @return ユーザーのリスト
+     */
+    public List<User> getUsersByName(String name) {
+    	return greetingMapper.findUsersByName(name);
+    }
+    
+    /**
      * 挨拶とユーザーの情報を結合して取得します。
      * 
      * @return GreetingUserDTOのリスト

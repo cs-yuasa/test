@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -7,10 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.dto.GreetingRequest;
+import com.example.demo.model.User;
 import com.example.demo.service.GreetingService;
 
 /**
@@ -110,4 +116,16 @@ public class GreetingController {
 		String referer = request.getHeader("Referer");
 		return "redirect:" + (referer != null ? referer : "/");
 	}
+	
+	/**
+	 * JSONリクエストから受け取った名前をもとにユーザー一覧を取得します。
+	 * 
+	 * @param request 名前を含むリクエストボディ
+	 * @return 指定された名前に一致するユーザーのリスト
+	 */
+	@PostMapping("/api")
+	@ResponseBody
+	public List<User> searchUsersByName(@RequestBody GreetingRequest request) {
+	    return greetingService.getUsersByName(request.getName());
+	} 
 }

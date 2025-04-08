@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<link rel="icon" href="data:,">
-<title>Greeting</title>
+	<meta charset="UTF-8">
+	<link rel="icon" href="data:,">
+	<title>Greeting</title>
 </head>
+
 <body>
 	<h2>新規作成</h2>
-    <form th:action="@{/create}" method="post" class="form-inline">
+	<form th:action="@{/create}" method="post" class="form-inline">
 		<input list=names type="text" name="name" maxlength="50" placeholder="名前" required />
 		<datalist id="names">
-		    <option th:each="user : ${users}" th:value=${user.name}>
+			<option th:each="user : ${users}" th:value=${user.name}>
 		</datalist>
-        <input type="text" name="message" maxlength="50" placeholder="メッセージ" required />
-        <button type="submit" class="create-btn">作成</button>
-    </form>
+		<input type="text" name="message" maxlength="50" placeholder="メッセージ" required />
+		<button type="submit" class="create-btn">作成</button>
+	</form>
 
-    <h2>データ一覧</h2>
-    <table th:if="${not #lists.isEmpty(greetings)}">
-        <thead>
-            <tr>
-                <th>ID</th>
+	<h2>データ一覧</h2>
+	<table th:if="${not #lists.isEmpty(greetings)}">
+		<thead>
+			<tr>
+				<th>ID</th>
 				<th>名前</th>
-                <th>メッセージ</th>
-                <th>メモ</th>
-                <th>更新</th>
+				<th>メッセージ</th>
+				<th>メモ</th>
+				<th>更新</th>
 				<th>削除</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="greeting : ${greetings}">
-                <td th:text="${greeting.id}"></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="greeting : ${greetings}">
+				<td th:text="${greeting.id}"></td>
 				<td>
 					<form th:action="@{/update/{id}(id=${greeting.id})}" method="post">
-					<input type="text" name="name" maxlength="50" th:value="${greeting.name}" placeholder="名前" required/>
-	            </td>
-                <td>
-                    <input type="text" name="message" maxlength="50" th:value="${greeting.message}" placeholder="メッセージ" required />
-                </td>
-                <td>
-                    <input type="text" name="memo" maxlength="50" th:value="${greeting.memo}" placeholder="メモ..." />
-                </td>
+						<input type="text" name="name" maxlength="50" th:value="${greeting.name}" placeholder="名前"
+							required />
+				</td>
 				<td>
-                    <button type="submit" class="update-btn">更新</button>
+					<input type="text" name="message" maxlength="50" th:value="${greeting.message}" placeholder="メッセージ"
+						required />
+				</td>
+				<td>
+					<input type="text" name="memo" maxlength="50" th:value="${greeting.memo}" placeholder="メモ..." />
+				</td>
+				<td>
+					<button type="submit" class="update-btn">更新</button>
 					</form>
-                </td>
+				</td>
 				<td>
-                    <form th:action="@{/delete/{id}(id=${greeting.id})}" method="post">
-                        <button type="submit" class="delete-btn">削除</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+					<form th:action="@{/delete/{id}(id=${greeting.id})}" method="post">
+						<button type="submit" class="delete-btn">削除</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	<p th:if="${#lists.isEmpty(greetings)}">データがありません</p>
 	<div th:if="${successMessage}" style="color: #4CAF50;">
-	    <p th:text="${successMessage}"></p>
+		<p th:text="${successMessage}"></p>
 	</div>
+
+	<h2>ユーザー検索（API）</h2>
+	<div>
+		<input type="text" id="search-name" placeholder="名前を入力" maxlength="50">
+		<button id="search-button">検索</button>
+	</div>
+	<div id="search-result"></div>
+	<script src="/js/index.js"></script>
 </body>
+
 </html>
