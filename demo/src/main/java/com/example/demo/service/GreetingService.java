@@ -56,6 +56,16 @@ public class GreetingService {
     }
     
     /**
+     * ユーザーを追加します。
+     * @param name ユーザー名
+     */
+    public void addUser(String name) {
+    	User user = new User();
+        user.setName(name);
+    	greetingMapper.insertUser(user);
+    }
+    
+    /**
      * 全ユーザーの情報を取得します。
      * 
      * @return ユーザーのリスト

@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.dto.GreetingRequest;
 import com.example.demo.model.User;
 import com.example.demo.service.GreetingService;
 
@@ -118,14 +119,36 @@ public class GreetingController {
 	}
 	
 	/**
-	 * JSONリクエストから受け取った名前をもとにユーザー一覧を取得します。
+	 * クエリパラメータで受け取ったユーザー名をもとにユーザー一覧を取得します。
 	 * 
-	 * @param request 名前を含むリクエストボディ
-	 * @return 指定された名前に一致するユーザーのリスト
+	 * @param name ユーザー名
+	 * @return 指定されたユーザー名に一致するユーザーのリスト
+	 */
+	@GetMapping("/api")
+	@ResponseBody
+	public List<User> searchUsersByName(@RequestParam String name) {
+	    return greetingService.getUsersByName(name);
+	}
+	
+	/**
+	 * リクエストボディで受けったユーザー名をもとにユーザーを作成します。
+	 * すでに同じユーザー名が存在する場合は作成しません。
+	 * 
+	 * @param request ユーザー情報を含むリクエストボディ
+	 * @return ResponseEntity 成功・エラーメッセージを含むレスポンス
 	 */
 	@PostMapping("/api")
 	@ResponseBody
-	public List<User> searchUsersByName(@RequestBody GreetingRequest request) {
-	    return greetingService.getUsersByName(request.getName());
-	} 
+	public ResponseEntity<String> createUser(@RequestBody User request) {
+		List<User> user = greetingService.getUsersByName(request.getName());
+		if (user == null || user.isEmpty()) {
+			greetingService.addUser(request.getName());
+			return ResponseEntity.status(HttpStatus.OK)
+                    .body("作成が完了しました。");
+		} else {
+			System.out.println(user);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("この名前はすでに使われています。");
+		}
+	}
 }
